@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hengan.qrcode.mapper.EmployeeMapper" >
+    <resultMap id="BaseResultMap" type="com.hengan.qrcode.entity.Employee" >
+        <id column="id" property="id"  />
+        <result column="wokecode" property="wokecode" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, wokecode,name ,sex,mobile,modifytime
+    </sql>
+    <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from ha_employee
+        where wokeCode = #{wokeCode}
+    </select>
+    <delete id="deleteALL" >
+        delete from ha_employee
+    </delete>
+    <select id ="selectAdd" resultMap="BaseResultMap">
+        SELECT a.* FROM ha_employee a where a.wokecode not in (SELECT wokecode from ha_employee_backup)
+    </select>
+    <select id="selectUpdate" resultMap="BaseResultMap">
+        SELECT
+            a.*
+        FROM
+            ha_employee a,
+            ha_employee_backup b
+        WHERE
+            a.wokecode = b.wokecode
+        AND ( a.mobile != b.mobile OR a.NAME != b.NAME OR a.sex != b.sex )
+    </select>
+    <select id="selectDel" resultMap="BaseResultMap">
+        SELECT
+            a.*
+        FROM
+            ha_employee_backup a
+        WHERE
+            a.wokecode NOT IN ( SELECT wokecode FROM ha_employee )
+    </select>
+    <insert id="insertBatch">
+        INSERT INTO ha_employee (
+          <include refid="Base_Column_List" />
+        )
+        VALUES
+        <foreach collection ="list" item="employee" separator =",">
+            (#{employee.id}, #{employee.wokecode}, #{employee.name},#{employee.sex},#{employee.mobile},now())
+        </foreach >
+    </insert>
+    <insert id="insertAdd" parameterType="com.hengan.qrcode.entity.Employee">
+        insert into ha_employee_backup (id, wokecode,name ,sex,mobile,modifytime,status,message)
+        VALUES(#{id},#{wokecode},#{name},#{sex},#{mobile},now(),#{status},#{message})
+    </insert>
+    <update id="updateEdit" parameterType="com.hengan.qrcode.entity.Employee">
+        update ha_employee_backup
+        <set>
+            name=#{name},sex=#{sex},mobile=#{mobile},modifytime=now(),status=#{status},message=#{message}
+        </set>
+        where wokecode=#{wokecode}
+    </update>
+    <!--删除离职-->
+    <delete id="removeDel" parameterType="java.lang.String">
+        delete from ha_employee_backup where wokecode = #{wokecode}
+    </delete>
+</mapper>
