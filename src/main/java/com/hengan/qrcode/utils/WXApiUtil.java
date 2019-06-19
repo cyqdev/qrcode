@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 public class WXApiUtil {
 
     public static WXToken token =  new WXToken();
+    public static WXToken token1 =  new WXToken();
 
     /**
      * 获取token
@@ -26,6 +27,23 @@ public class WXApiUtil {
         System.out.println(token);
         return token;
     }
+    /**
+     * 获取token1
+     * @return
+     */
+    public static WXToken getAccessToken1(){
+        String corpid = "wxbaaa22057237762a";
+        String corpsecret = "4uRR8245ko5cJKs93gg6h0eCha3DSrWxRFunXT-EXMI";
+        String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=#id&corpsecret=#secrect";
+        url = url.replace("#id", corpid);
+        url = url.replace("#secrect", corpsecret);
+        String accessToken = (String) JSON.parseObject(GetWeixinHttpRequestByte.get(url)).get("access_token");
+        token1.setAccessToken(accessToken);
+        token1.setEXpire(false);
+        System.out.println(token);
+        return token;
+    }
+
 
 
     /**
@@ -34,23 +52,23 @@ public class WXApiUtil {
      * @return
      */
     public static JSONObject getUserInfo(String code){
-        if(StringUtils.isEmpty(token.getAccessToken()) || token.isEXpire()){
-            getAccessToken();
+        if(StringUtils.isEmpty(token1.getAccessToken()) || token1.isEXpire()){
+            getAccessToken1();
         }
         String url = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=#access_token&code=#code";
         url = url.replace("#code",code);
-        url = url.replace("#access_token", token.getAccessToken());
+        url = url.replace("#access_token", token1.getAccessToken());
         JSONObject obj = JSON.parseObject(GetWeixinHttpRequestByte.get(url));
         return obj;
     }
 
 
     public static JSONObject getUserDetail(String userId){
-        if(StringUtils.isEmpty(token.getAccessToken()) || token.isEXpire()){
-            getAccessToken();
+        if(StringUtils.isEmpty(token1.getAccessToken()) || token1.isEXpire()){
+            getAccessToken1();
         }
         String detailUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=#access_token&userid=#userid";
-        detailUrl = detailUrl.replace("#access_token", token.getAccessToken());
+        detailUrl = detailUrl.replace("#access_token", token1.getAccessToken());
         detailUrl = detailUrl.replace("#userid",userId);
         String detailResult = GetWeixinHttpRequestByte.get(detailUrl);
         JSONObject detailObj = JSON.parseObject(detailResult);
@@ -85,5 +103,14 @@ public class WXApiUtil {
         String Result = GetWeixinHttpRequestByte.get(department_url);
         return Result;
     }
-
+    public static String getTag(String tagid){
+        if(StringUtils.isEmpty(token.getAccessToken()) || token.isEXpire()){
+            getAccessToken();
+        }
+        String department_url = "https://qyapi.weixin.qq.com/cgi-bin/tag/get?access_token=#ACCESS_TOKEN&tagid=#TAGID";
+        department_url = department_url.replace("#ACCESS_TOKEN",token.getAccessToken());
+        department_url = department_url.replace("#TAGID",tagid);
+        String Result = GetWeixinHttpRequestByte.get(department_url);
+        return Result;
+    }
 }

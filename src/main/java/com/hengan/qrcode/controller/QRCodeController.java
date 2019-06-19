@@ -17,16 +17,17 @@ public class QRCodeController {
 
     @RequestMapping(value = "/qrCode",method = RequestMethod.GET)
     public String hello(HttpServletRequest request, Model model) {
-        String code = request.getParameter("code");
-        JSONObject obj =WXApiUtil.getUserInfo(code);
-        String workCode = obj.getString("UserId");
-        String result = "";
-        if(StringUtils.isNotBlank(workCode)) {
-            JSONObject objDetial =WXApiUtil.getUserDetail(workCode);
-            String mobile = objDetial.getString("mobile");
-            result += "mp="+mobile+"&mid="+workCode+"&time="+DateTimeUtils.getFormatDate(new Date(), "yyyyMMddHHmmss");
-        }
-        model.addAttribute("result", result);
+//        String code = request.getParameter("code");
+//        JSONObject obj =WXApiUtil.getUserInfo(code);
+//        String workCode = obj.getString("UserId");
+//        String result = "";
+//        if(StringUtils.isNotBlank(workCode)) {
+//            JSONObject objDetial =WXApiUtil.getUserDetail(workCode);
+//            String mobile = objDetial.getString("mobile");
+//            result += "mp="+mobile+"&mid="+workCode+"&time="+DateTimeUtils.getFormatDate(new Date(), "yyyyMMddHHmmss");
+//        }
+//        model.addAttribute("result", result);
+        JSONObject objDetial =WXApiUtil.getUserDetail("17105223");
         return "qrCode";
     }
 }

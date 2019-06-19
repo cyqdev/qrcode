@@ -114,7 +114,7 @@ public class SyncVIPUtil {
         try {
             HttpEntity httpEntity = HttpClientPool.PostForm(SERVE+CREATE,null,formParams);
             data = EntityUtils.toString(httpEntity);
-            System.out.println(data);
+//            System.out.println(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,7 +178,6 @@ public class SyncVIPUtil {
         try {
             HttpEntity httpEntity = HttpClientPool.PostForm(SERVE+UPDATE_STATUS,null,formParams);
             data = EntityUtils.toString(httpEntity);
-            System.out.println(data);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -2,20 +2,14 @@ package com.hengan.qrcode.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.hengan.qrcode.service.EmployeeService;
-import com.hengan.qrcode.utils.DateTimeUtils;
 import com.hengan.qrcode.entity.Employee;
+import com.hengan.qrcode.service.EmployeeService;
 import com.hengan.qrcode.utils.WXApiUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -87,4 +81,9 @@ public class EmployeeSyncController {
         employeeService.removeDel(s);
         return "sss";
     }
+//    @RequestMapping("t7")
+//    public String getC7() {
+//        String tag = WXApiUtil.getTag("28");
+//        return tag;
+//    }
 }

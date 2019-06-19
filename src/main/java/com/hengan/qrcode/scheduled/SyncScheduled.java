@@ -21,7 +21,7 @@ public class SyncScheduled {
     @Autowired
     private EmployeeService employeeService;
 
-    @Scheduled(cron = "10 11 16 * * ?") // 每7000秒执行一次
+    @Scheduled(cron = "15 16 16 * * ?") // 每天23:00:00执行一次
     public void syncStart() {
         JSONArray userDetailList = WXApiUtil.getUserDetailList("2849");
         List<Employee> list = new ArrayList<>();
@@ -108,7 +108,7 @@ public class SyncScheduled {
         System.out.println("总新增量：【"+list.size()+"】,成功：【"+success+"】,失败:【"+fail+"】");
     }
 
-    public static void main(String[] args) {
-        new SyncScheduled().delete();
-    }
+//    public static void main(String[] args) {
+//        new SyncScheduled().delete();
+//    }
 }
